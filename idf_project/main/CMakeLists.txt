@@ -1,0 +1,10 @@
+idf_component_register(SRCS "src/openipmc_esp32_example_main.c"
+                            "src/esp32_ipmc_ios.c"
+                            "OpenIPMC/src/ipmb_0.c"
+                            "OpenIPMC/src/ipmb_0.h"
+                            "OpenIPMC/src/ipmc_ios.h"
+                            "OpenIPMC/src/ipmc_tasks.h"
+                            "custom_i2c/custom_i2c.c"
+                            "custom_i2c/custom_i2c.h"
+                    INCLUDE_DIRS "."
+                    )

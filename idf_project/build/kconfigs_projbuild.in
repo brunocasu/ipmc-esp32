@@ -1,0 +1,5 @@
+source "/home/brunocasu/esp/esp-idf/components/app_update/Kconfig.projbuild"
+source "/home/brunocasu/esp/esp-idf/components/bootloader/Kconfig.projbuild"
+source "/home/brunocasu/esp/esp-idf/components/esptool_py/Kconfig.projbuild"
+source "/home/brunocasu/esp/esp-idf/components/partition_table/Kconfig.projbuild"
+source "/home/brunocasu/esp/idf_projects/openipmc_esp32/main/Kconfig.projbuild"
