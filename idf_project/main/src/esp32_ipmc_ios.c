@@ -649,14 +649,16 @@ void ipmc_ios_ipmb_wait_input_msg(void)
 // Task for receiving the messages through I2C channel 0
 void i2c_0_receiver_manager_task( void *pvParameters )
 {
-    int status;
     for(;;)
     {
         if ( i2c0_mode == IIC_MODE_SLAVE )
         {  
-            iic0_recv_len = i2c_slave_read_buffer_custom(I2C_NUM_0, ipmba_input_buffer, IPMB_BUFF_SIZE, portMAX_DELAY);
+            // int i2c_slave_receive_message(i2c_port_t i2c_num, uint8_t* user_buffer, size_t* user_buffer_free_size, TickType_t const ticks_timeout)
+            size_t ipmba_input_buffer_free_space = IPMB_BUFF_SIZE;
+            int const retcode = i2c_slave_receive_message(I2C_NUM_0, ipmba_input_buffer, &ipmba_input_buffer_free_space, portMAX_DELAY);
+            iic0_recv_len = IPMB_BUFF_SIZE - ipmba_input_buffer_free_space;
             
-            if (iic0_recv_len > 0)
+            if (iic0_recv_len > 0 && retcode == 0)
                 xSemaphoreGive(ipmb_rec_semphr); // message has arrived at i2c0 
         }
     }
@@ -665,15 +667,17 @@ void i2c_0_receiver_manager_task( void *pvParameters )
 // Task for receiving the messages through I2C channel 1
 void i2c_1_receiver_manager_task( void *pvParameters )
 {
-    int status;
     for(;;)
     {
         if ( i2c1_mode == IIC_MODE_SLAVE )
         {  
-            iic1_recv_len = i2c_slave_read_buffer_custom(I2C_NUM_1, ipmbb_input_buffer, IPMB_BUFF_SIZE, portMAX_DELAY);
+            // int i2c_slave_receive_message(i2c_port_t i2c_num, uint8_t* user_buffer, size_t* user_buffer_free_size, TickType_t const ticks_timeout)
+            size_t ipmbb_input_buffer_free_space = IPMB_BUFF_SIZE;
+            int const retcode = i2c_slave_receive_message(I2C_NUM_1, ipmbb_input_buffer, &ipmbb_input_buffer_free_space, portMAX_DELAY);
+            iic1_recv_len = IPMB_BUFF_SIZE - ipmbb_input_buffer_free_space;
             
-            if (iic1_recv_len > 0)
-                xSemaphoreGive(ipmb_rec_semphr); // message has arrived at i2c0 
+            if (iic1_recv_len > 0 && retcode == 0)
+                xSemaphoreGive(ipmb_rec_semphr); // message has arrived at i2c0
         }
     }
 }

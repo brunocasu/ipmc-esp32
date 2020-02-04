@@ -64,7 +64,7 @@ void app_main( void )
 	             NULL, 						
 	             tskIDLE_PRIORITY+1,		    
 	             &ipmb_0_msg_sender_task_ptr );
-/*    
+    
     xTaskCreate( fru_state_machine_task, 	
 	             ( const char * ) "SMM", 	
 	             8000, 	
@@ -92,7 +92,15 @@ void app_main( void )
 	             NULL, 						
 	             tskIDLE_PRIORITY+2,		
 	             &ipmc_blue_led_blink_task_ptr );
-*/    
+
+    
+    while (1){
+        vTaskDelay (pdMS_TO_TICKS(100));
+    }
+}
+
+// example for testing
+/*
     data_ipmb ipmi_req;
     ipmi_req.channel = 'A';
     ipmi_req.length  = 8;
@@ -104,38 +112,7 @@ void app_main( void )
     ipmi_req.data[5] = 0xff;
     ipmi_req.data[6] = 0xff;
     ipmi_req.data[7] = 0xff;
-    // int n=0;
-    //vTaskDelay (pdMS_TO_TICKS(5500));
     
-    while(1){
-    vTaskDelay (pdMS_TO_TICKS(4000));
-    xQueueSendToBack(queue_ipmb0_out, &ipmi_req, portMAX_DELAY); // send message
-    vTaskDelay (pdMS_TO_TICKS(10));
-    xQueueSendToBack(queue_ipmb0_out, &ipmi_req, portMAX_DELAY);
-    vTaskDelay (pdMS_TO_TICKS(10));
-    xQueueSendToBack(queue_ipmb0_out, &ipmi_req, portMAX_DELAY);
-    vTaskDelay (pdMS_TO_TICKS(10));
-    xQueueSendToBack(queue_ipmb0_out, &ipmi_req, portMAX_DELAY);
-    }    
-    while (1){
-        vTaskDelay (pdMS_TO_TICKS(100));
-    }
-}
-
-// example for testing
-/*
-    data_ipmb ipmi_req;
-    ipmi_req.channel = 'A';
-    ipmi_req.lenght  = 8;
-    ipmi_req.data[0] = 0x86;
-    ipmi_req.data[1] = 0xff;
-    ipmi_req.data[2] = 0x7b; // checksum of bytes [0] and [1]
-    ipmi_req.data[3] = 0xff;
-    ipmi_req.data[4] = 0xff;
-    ipmi_req.data[5] = 0xff;
-    ipmi_req.data[6] = 0xff;
-    ipmi_req.data[7] = 0xff;
-    int n=0;
     //vTaskDelay (pdMS_TO_TICKS(5500));
     
     while(1){
