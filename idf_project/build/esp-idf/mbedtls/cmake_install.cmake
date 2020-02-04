@@ -1,4 +1,4 @@
-# Install script for directory: /home/brunocasu/esp/esp-idf/components/mbedtls
+# Install script for directory: /home/brunocasu/clones/ipmc_esp32/ipmc-esp32/esp-idf/components/mbedtls
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -34,7 +34,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/brunocasu/esp/idf_projects/openipmc_esp32/build/esp-idf/mbedtls/mbedtls/cmake_install.cmake")
+  include("/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/idf_project/build/esp-idf/mbedtls/mbedtls/cmake_install.cmake")
 
 endif()
 

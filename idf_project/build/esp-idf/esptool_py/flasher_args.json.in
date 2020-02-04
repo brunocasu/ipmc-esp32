@@ -8,11 +8,13 @@
         "flash_freq": "40m"
     },
     "flash_files" : {
-        $<JOIN:$<TARGET_PROPERTY:___idf_esptool_py,FLASH_PROJECT_ARGS_JSON>,,
-        >
+        "0x8000" : "partition_table/partition-table.bin",
+        "0x1000" : "bootloader/bootloader.bin",
+        "0x10000" : "$<TARGET_PROPERTY:__idf_build_target,EXECUTABLE_NAME>.bin"
     },
-    $<JOIN:$<TARGET_PROPERTY:___idf_esptool_py,FLASH_PROJECT_ARGS_ENTRY_JSON>,,
-    >,
+    "partition_table" : { "offset" : "0x8000", "file" : "partition_table/partition-table.bin" },
+    "bootloader" : { "offset" : "0x1000", "file" : "bootloader/bootloader.bin" },
+    "app" : { "offset" : "0x10000", "file" : "$<TARGET_PROPERTY:__idf_build_target,EXECUTABLE_NAME>.bin" },
     "extra_esptool_args" : {
         "after"  : "hard_reset",
         "before" : "default_reset",

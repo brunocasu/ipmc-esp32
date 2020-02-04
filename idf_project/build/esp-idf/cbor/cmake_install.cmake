@@ -1,4 +1,4 @@
-# Install script for directory: /home/brunocasu/esp/esp-idf/components/cbor
+# Install script for directory: /home/brunocasu/clones/ipmc_esp32/ipmc-esp32/esp-idf/components/cbor
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

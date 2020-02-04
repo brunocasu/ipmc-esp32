@@ -43,8 +43,8 @@
         "children": [], 
         "depends_on": null, 
         "help": null, 
-        "id": "IDF_TARGET_ESP32S2BETA", 
-        "name": "IDF_TARGET_ESP32S2BETA", 
+        "id": "IDF_TARGET_ESP32S2", 
+        "name": "IDF_TARGET_ESP32S2", 
         "range": null, 
         "title": null, 
         "type": "bool"
@@ -89,6 +89,16 @@
                 "name": "SDK_MAKE_WARN_UNDEFINED_VARIABLES", 
                 "range": null, 
                 "title": "'make' warns on undefined variables", 
+                "type": "bool"
+            }, 
+            {
+                "children": [], 
+                "depends_on": null, 
+                "help": "Enable this option in case you have a custom toolchain which supports time_t wide 64-bits.\nThis option checks time_t is 64-bits and disables ROM time functions\nto use the time functions from the toolchain instead.\nThis option allows resolving the Y2K38 problem.\nSee \"Setup Linux Toolchain from Scratch\" to build\na custom toolchain which supports 64-bits time_t.\n\nNote: ESP-IDF does not currently come with any pre-compiled toolchain\nthat supports 64-bit wide time_t.\nThis will change in a future major release,\nbut currently 64-bit time_t requires a custom built toolchain.", 
+                "id": "SDK_TOOLCHAIN_SUPPORTS_TIME_WIDE_64_BITS", 
+                "name": "SDK_TOOLCHAIN_SUPPORTS_TIME_WIDE_64_BITS", 
+                "range": null, 
+                "title": "Toolchain supports time_t wide 64-bits", 
                 "type": "bool"
             }
         ], 
@@ -410,7 +420,7 @@
                             {
                                 "children": [], 
                                 "depends_on": "BOOTLOADER_APP_ANTI_ROLLBACK", 
-                                "help": "The size of the efuse secure version field.\nIts length is limited to 32 bits for ESP32 and 16 bits for ESP32S2BETA.\nThis determines how many times the security version can be increased.", 
+                                "help": "The size of the efuse secure version field.\nIts length is limited to 32 bits for ESP32 and 16 bits for ESP32-S2.\nThis determines how many times the security version can be increased.", 
                                 "id": "BOOTLOADER_APP_SEC_VER_SIZE_EFUSE_FIELD", 
                                 "name": "BOOTLOADER_APP_SEC_VER_SIZE_EFUSE_FIELD", 
                                 "range": null, 
@@ -692,7 +702,7 @@
                                 "type": "bool"
                             }
                         ], 
-                        "depends_on": "IDF_TARGET_ESP32S2BETA && SECURE_FLASH_ENC_ENABLED", 
+                        "depends_on": "IDF_TARGET_ESP32S2 && SECURE_FLASH_ENC_ENABLED", 
                         "help": "Size of generated AES-XTS key.\n\nAES-128 uses a 256-bit key (32 bytes) which occupies one Efuse key block.\nAES-256 uses a 512-bit key (64 bytes) which occupies two Efuse key blocks.\n\nThis setting is ignored if either type of key is already burned to Efuse before the first boot.\nIn this case, the pre-burned key is used and no new key is generated.", 
                         "id": "security-features-enable-flash-encryption-on-boot-read-docs-first--size-of-generated-aes-xts-key", 
                         "name": "SECURE_FLASH_ENCRYPTION_KEYSIZE", 
@@ -2281,7 +2291,7 @@
                             }
                         ], 
                         "depends_on": null, 
-                        "help": "Configure the number of universally administered (by IEEE) MAC addresses.\nDuring initialisation, MAC addresses for each network interface are generated or derived from a\nsingle base MAC address.\nIf the number of universal MAC addresses is four, all four interfaces (WiFi station, WiFi softap,\nBluetooth and Ethernet) receive a universally administered MAC address. These are generated\nsequentially by adding 0, 1, 2 and 3 (respectively) to the final octet of the base MAC address.\nIf the number of universal MAC addresses is two, only two interfaces (WiFi station and Bluetooth)\nreceive a universally administered MAC address. These are generated sequentially by adding 0\nand 1 (respectively) to the base MAC address. The remaining two interfaces (WiFi softap and Ethernet)\nreceive local MAC addresses. These are derived from the universal WiFi station and Bluetooth MAC\naddresses, respectively.\nWhen using the default (Espressif-assigned) base MAC address, either setting can be used. When using\na custom universal MAC address range, the correct setting will depend on the allocation of MAC\naddresses in this range (either 2 or 4 per device.)", 
+                        "help": "Configure the number of universally administered (by IEEE) MAC addresses.\nDuring initialization, MAC addresses for each network interface are generated or derived from a\nsingle base MAC address.\nIf the number of universal MAC addresses is four, all four interfaces (WiFi station, WiFi softap,\nBluetooth and Ethernet) receive a universally administered MAC address. These are generated\nsequentially by adding 0, 1, 2 and 3 (respectively) to the final octet of the base MAC address.\nIf the number of universal MAC addresses is two, only two interfaces (WiFi station and Bluetooth)\nreceive a universally administered MAC address. These are generated sequentially by adding 0\nand 1 (respectively) to the base MAC address. The remaining two interfaces (WiFi softap and Ethernet)\nreceive local MAC addresses. These are derived from the universal WiFi station and Bluetooth MAC\naddresses, respectively.\nWhen using the default (Espressif-assigned) base MAC address, either setting can be used. When using\na custom universal MAC address range, the correct setting will depend on the allocation of MAC\naddresses in this range (either 2 or 4 per device.)", 
                         "id": "component-config-esp32-specific-number-of-universally-administered-by-ieee-mac-address", 
                         "name": "ESP32_UNIVERSAL_MAC_ADDRESSES", 
                         "title": "Number of universally administered (by IEEE) MAC address", 
@@ -2933,6 +2943,16 @@
                         "type": "int"
                     }, 
                     {
+                        "children": [], 
+                        "depends_on": null, 
+                        "help": "Minimal value of size, in bytes, accepted to execute a expression\nwith shared stack.", 
+                        "id": "ESP_MINIMAL_SHARED_STACK_SIZE", 
+                        "name": "ESP_MINIMAL_SHARED_STACK_SIZE", 
+                        "range": null, 
+                        "title": "Minimal allowed size for shared stack", 
+                        "type": "int"
+                    }, 
+                    {
                         "children": [
                             {
                                 "children": [], 
@@ -3149,6 +3169,46 @@
                         "help": "Debug stubs are used by OpenOCD to execute pre-compiled onboard code\nwhich does some useful debugging stuff, e.g. GCOV data dump.", 
                         "id": "ESP_DEBUG_STUBS_ENABLE", 
                         "name": "ESP_DEBUG_STUBS_ENABLE", 
+                        "range": null, 
+                        "title": null, 
+                        "type": "bool"
+                    }, 
+                    {
+                        "children": [], 
+                        "depends_on": null, 
+                        "help": null, 
+                        "id": "ESP_MAC_ADDR_UNIVERSE_WIFI_STA", 
+                        "name": "ESP_MAC_ADDR_UNIVERSE_WIFI_STA", 
+                        "range": null, 
+                        "title": null, 
+                        "type": "bool"
+                    }, 
+                    {
+                        "children": [], 
+                        "depends_on": null, 
+                        "help": null, 
+                        "id": "ESP_MAC_ADDR_UNIVERSE_WIFI_AP", 
+                        "name": "ESP_MAC_ADDR_UNIVERSE_WIFI_AP", 
+                        "range": null, 
+                        "title": null, 
+                        "type": "bool"
+                    }, 
+                    {
+                        "children": [], 
+                        "depends_on": null, 
+                        "help": null, 
+                        "id": "ESP_MAC_ADDR_UNIVERSE_BT", 
+                        "name": "ESP_MAC_ADDR_UNIVERSE_BT", 
+                        "range": null, 
+                        "title": null, 
+                        "type": "bool"
+                    }, 
+                    {
+                        "children": [], 
+                        "depends_on": null, 
+                        "help": null, 
+                        "id": "ESP_MAC_ADDR_UNIVERSE_ETH", 
+                        "name": "ESP_MAC_ADDR_UNIVERSE_ETH", 
                         "range": null, 
                         "title": null, 
                         "type": "bool"

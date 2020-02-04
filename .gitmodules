@@ -1,3 +1,6 @@
 [submodule "esp-idf"]
 	path = esp-idf
 	url = git@github.com:brunocasu/esp-idf.git
+[submodule "idf_project/main/openipmc"]
+	path = idf_project/main/openipmc
+	url = git@gitlab.com:bruno.casu/openipmc.git

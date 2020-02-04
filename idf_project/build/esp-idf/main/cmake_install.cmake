@@ -1,4 +1,4 @@
-# Install script for directory: /home/brunocasu/esp/idf_projects/openipmc_esp32/main
+# Install script for directory: /home/brunocasu/clones/ipmc_esp32/ipmc-esp32/idf_project/main
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

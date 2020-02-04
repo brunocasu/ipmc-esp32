@@ -38,11 +38,11 @@
 #include "soc/i2c_periph.h"
 
 //OpenIPMC includes
-#include "OpenIPMC/src/ipmc_ios.h"
-#include "OpenIPMC/src/ipmb_0.h"
-#include "OpenIPMC/src/ipmi_msg_manager.h"
-#include "OpenIPMC/src/fru_state_machine.h"
-#include "OpenIPMC/src/ipmc_tasks.h"
+#include "openipmc/src/ipmc_ios.h"
+#include "openipmc/src/ipmb_0.h"
+#include "openipmc/src/ipmi_msg_manager.h"
+#include "openipmc/src/fru_state_machine.h"
+#include "openipmc/src/ipmc_tasks.h"
 
 #define ACK_CHECK_EN 0x1       /*!< I2C master will check ack from slave*/
 #define ACK_CHECK_DIS 0x0      /*!< I2C master will not check ack from slave */
@@ -54,7 +54,12 @@
 
 
 static _Bool ipmc_ios_ready_flag = pdFALSE;
- 
+
+void i2c_0_receiver_manager_task( void *pvParameters );
+void i2c_1_receiver_manager_task( void *pvParameters );
+
+TaskHandle_t i2c_0_receiver_manager_task_ptr;
+TaskHandle_t i2c_1_receiver_manager_task_ptr;
 
 //I2C state variables
 static int i2c0_mode;    // Master or Slave
@@ -71,7 +76,7 @@ uint8_t ipmbb_input_buffer[IPMB_BUFF_SIZE];
 static SemaphoreHandle_t ipmb_rec_semphr = NULL;
 
 // Mutex to avoid printf superpositioning.
-static SemaphoreHandle_t printf_mutex = NULL;
+// static SemaphoreHandle_t printf_mutex = NULL;
 
 // config i2c mode functions
 esp_err_t set_ipmba_channel_as_master(void);
@@ -129,7 +134,6 @@ esp_err_t set_ipmba_channel_as_slave (void)
     {    
         i2c_driver_delete(i2c_ipmba_port);
     
-        i2c_config_t conf_ipmba_slave;
         conf_ipmba_slave.sda_io_num = GPIO_NUM_22;
         conf_ipmba_slave.sda_pullup_en = GPIO_PULLUP_ENABLE;
         conf_ipmba_slave.scl_io_num = GPIO_NUM_23;
@@ -191,7 +195,6 @@ esp_err_t set_ipmbb_channel_as_slave(void)
     {
         i2c_driver_delete(i2c_ipmbb_port);
 
-        i2c_config_t conf_ipmbb_slave;
         conf_ipmbb_slave.sda_io_num = GPIO_NUM_18;
         conf_ipmbb_slave.sda_pullup_en = GPIO_PULLUP_ENABLE;
         conf_ipmbb_slave.scl_io_num = GPIO_NUM_19;
@@ -314,7 +317,7 @@ int periphs_init(void)
     i2c1_mode = IIC_MODE_SLAVE;
     if ( ipmbb_status!=ESP_OK )
         status_global = 0; // config fail
-    
+
     // Create the receiver tasks
     xTaskCreate(i2c_0_receiver_manager_task, 				
                 ( const char * ) "I2C0", 	         
@@ -328,8 +331,8 @@ int periphs_init(void)
                 8000,
                 NULL,
                 tskIDLE_PRIORITY,
-            &i2c_1_receiver_manager_task_ptr );
-
+                &i2c_1_receiver_manager_task_ptr );
+        
     // initialization status for the IOs
     if (status_global == 1)
       ipmc_ios_ready_flag = pdTRUE;
@@ -599,18 +602,62 @@ void ipmc_ios_ipmb_wait_input_msg(void)
 }
 
 
+//// Task for receiving the messages through I2C channel 0
+//void i2c_0_receiver_manager_task( void *pvParameters )
+//{
+//    int status;
+//    for(;;)
+//    {
+//        if ( i2c0_mode == IIC_MODE_SLAVE )
+//        {  
+//            size_t buffer_free_size = IPMB_BUFF_SIZE;
+//            printf("WAITING... (0)\n");
+//            status = i2c_slave_receive_message(I2C_NUM_0, ipmba_input_buffer, &buffer_free_size, portMAX_DELAY);
+//            printf("EXITING LOOP (0)\n");
+//            if (status == I2C_SLAVE_RECEIVE_MESSAGE_RETVAL_SUCCESS)
+//            {    
+//                iic0_recv_len = IPMB_BUFF_SIZE - buffer_free_size;
+//                if (iic0_recv_len > 0)
+//                    xSemaphoreGive(ipmb_rec_semphr); // message has arrived at i2c0
+//            }        
+//        }
+//    }
+//}
+//
+//// Task for receiving the messages through I2C channel 1
+//void i2c_1_receiver_manager_task( void *pvParameters )
+//{
+//    int status;
+//    for(;;)
+//    {
+//        if ( i2c1_mode == IIC_MODE_SLAVE )   
+//        {
+//            size_t buffer_free_size = IPMB_BUFF_SIZE;
+//            printf("WAITING... (1)\n");
+//            status = i2c_slave_receive_message(I2C_NUM_1, ipmbb_input_buffer, &buffer_free_size, portMAX_DELAY);
+//            printf("EXITING LOOP (1)\n");
+//            if (status == I2C_SLAVE_RECEIVE_MESSAGE_RETVAL_SUCCESS)
+//            {    
+//                iic1_recv_len = IPMB_BUFF_SIZE - buffer_free_size;
+//                if (iic1_recv_len > 0)
+//                    xSemaphoreGive(ipmb_rec_semphr); // message has arrived at i2c1
+//            }
+//        }
+//    }
+//}
+
 // Task for receiving the messages through I2C channel 0
 void i2c_0_receiver_manager_task( void *pvParameters )
 {
+    int status;
     for(;;)
     {
         if ( i2c0_mode == IIC_MODE_SLAVE )
         {  
-            //printf("\nWaiting for msg I2C0...\n");
-            iic0_recv_len = i2c_slave_read_buffer(I2C_NUM_0, ipmba_input_buffer, IPMB_BUFF_SIZE, pdMS_TO_TICKS(100)); // the last argument (number of ticks) is disabled in the i2c driver
+            iic0_recv_len = i2c_slave_read_buffer_custom(I2C_NUM_0, ipmba_input_buffer, IPMB_BUFF_SIZE, portMAX_DELAY);
             
             if (iic0_recv_len > 0)
-                xSemaphoreGive(ipmb_rec_semphr); // message has arrived at i2c0
+                xSemaphoreGive(ipmb_rec_semphr); // message has arrived at i2c0 
         }
     }
 }
@@ -618,17 +665,17 @@ void i2c_0_receiver_manager_task( void *pvParameters )
 // Task for receiving the messages through I2C channel 1
 void i2c_1_receiver_manager_task( void *pvParameters )
 {
+    int status;
     for(;;)
     {
-        if ( i2c1_mode == IIC_MODE_SLAVE )   
-        {
-            //printf("\nWaiting for msg I2C1...\n");
-            iic1_recv_len = i2c_slave_read_buffer(I2C_NUM_1, ipmbb_input_buffer, IPMB_BUFF_SIZE, pdMS_TO_TICKS(100)); // the last argument (number of ticks) is disabled in the i2c driver   
+        if ( i2c1_mode == IIC_MODE_SLAVE )
+        {  
+            iic1_recv_len = i2c_slave_read_buffer_custom(I2C_NUM_1, ipmbb_input_buffer, IPMB_BUFF_SIZE, portMAX_DELAY);
             
             if (iic1_recv_len > 0)
-                xSemaphoreGive(ipmb_rec_semphr); // message has arrived at i2c1
+                xSemaphoreGive(ipmb_rec_semphr); // message has arrived at i2c0 
         }
-    }    
+    }
 }
 
 /*

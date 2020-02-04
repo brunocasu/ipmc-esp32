@@ -43,8 +43,8 @@
         "children": [], 
         "depends_on": null, 
         "help": null, 
-        "id": "IDF_TARGET_ESP32S2BETA", 
-        "name": "IDF_TARGET_ESP32S2BETA", 
+        "id": "IDF_TARGET_ESP32S2", 
+        "name": "IDF_TARGET_ESP32S2", 
         "range": null, 
         "title": null, 
         "type": "bool"
@@ -89,6 +89,16 @@
                 "name": "SDK_MAKE_WARN_UNDEFINED_VARIABLES", 
                 "range": null, 
                 "title": "'make' warns on undefined variables", 
+                "type": "bool"
+            }, 
+            {
+                "children": [], 
+                "depends_on": null, 
+                "help": "Enable this option in case you have a custom toolchain which supports time_t wide 64-bits.\nThis option checks time_t is 64-bits and disables ROM time functions\nto use the time functions from the toolchain instead.\nThis option allows resolving the Y2K38 problem.\nSee \"Setup Linux Toolchain from Scratch\" to build\na custom toolchain which supports 64-bits time_t.\n\nNote: ESP-IDF does not currently come with any pre-compiled toolchain\nthat supports 64-bit wide time_t.\nThis will change in a future major release,\nbut currently 64-bit time_t requires a custom built toolchain.", 
+                "id": "SDK_TOOLCHAIN_SUPPORTS_TIME_WIDE_64_BITS", 
+                "name": "SDK_TOOLCHAIN_SUPPORTS_TIME_WIDE_64_BITS", 
+                "range": null, 
+                "title": "Toolchain supports time_t wide 64-bits", 
                 "type": "bool"
             }
         ], 
@@ -195,6 +205,27 @@
                 "name": "APP_EXCLUDE_PROJECT_NAME_VAR", 
                 "range": null, 
                 "title": "Exclude PROJECT_NAME from firmware image", 
+                "type": "bool"
+            }, 
+            {
+                "children": [
+                    {
+                        "children": [], 
+                        "depends_on": "APP_PROJECT_VER_FROM_CONFIG", 
+                        "help": "Project version", 
+                        "id": "APP_PROJECT_VER", 
+                        "name": "APP_PROJECT_VER", 
+                        "range": null, 
+                        "title": "Project version", 
+                        "type": "string"
+                    }
+                ], 
+                "depends_on": null, 
+                "help": "If this is enabled, then config item APP_PROJECT_VER will be used for the variable PROJECT_VER.\nOther ways to set PROJECT_VER will be ignored.", 
+                "id": "APP_PROJECT_VER_FROM_CONFIG", 
+                "name": "APP_PROJECT_VER_FROM_CONFIG", 
+                "range": null, 
+                "title": "Get the project version from Kconfig", 
                 "type": "bool"
             }
         ], 
@@ -448,7 +479,7 @@
                             {
                                 "children": [], 
                                 "depends_on": "BOOTLOADER_APP_ANTI_ROLLBACK", 
-                                "help": "The size of the efuse secure version field.\nIts length is limited to 32 bits for ESP32 and 16 bits for ESP32S2BETA.\nThis determines how many times the security version can be increased.", 
+                                "help": "The size of the efuse secure version field.\nIts length is limited to 32 bits for ESP32 and 16 bits for ESP32-S2.\nThis determines how many times the security version can be increased.", 
                                 "id": "BOOTLOADER_APP_SEC_VER_SIZE_EFUSE_FIELD", 
                                 "name": "BOOTLOADER_APP_SEC_VER_SIZE_EFUSE_FIELD", 
                                 "range": null, 
@@ -730,7 +761,7 @@
                                 "type": "bool"
                             }
                         ], 
-                        "depends_on": "IDF_TARGET_ESP32S2BETA && SECURE_FLASH_ENC_ENABLED", 
+                        "depends_on": "IDF_TARGET_ESP32S2 && SECURE_FLASH_ENC_ENABLED", 
                         "help": "Size of generated AES-XTS key.\n\nAES-128 uses a 256-bit key (32 bytes) which occupies one Efuse key block.\nAES-256 uses a 512-bit key (64 bytes) which occupies two Efuse key blocks.\n\nThis setting is ignored if either type of key is already burned to Efuse before the first boot.\nIn this case, the pre-burned key is used and no new key is generated.", 
                         "id": "security-features-enable-flash-encryption-on-boot-read-docs-first--size-of-generated-aes-xts-key", 
                         "name": "SECURE_FLASH_ENCRYPTION_KEYSIZE", 
@@ -2343,6 +2374,26 @@
                             }, 
                             {
                                 "children": [], 
+                                "depends_on": "BTDM_CTRL_MODE_BTDM", 
+                                "help": "BLE auto latency, used to enhance classic BT performance\nwhile classic BT and BLE are enabled at the same time.", 
+                                "id": "BTDM_CTRL_AUTO_LATENCY", 
+                                "name": "BTDM_CTRL_AUTO_LATENCY", 
+                                "range": null, 
+                                "title": "Auto latency", 
+                                "type": "bool"
+                            }, 
+                            {
+                                "children": [], 
+                                "depends_on": null, 
+                                "help": null, 
+                                "id": "BTDM_CTRL_AUTO_LATENCY_EFF", 
+                                "name": "BTDM_CTRL_AUTO_LATENCY_EFF", 
+                                "range": null, 
+                                "title": null, 
+                                "type": "bool"
+                            }, 
+                            {
+                                "children": [], 
                                 "depends_on": null, 
                                 "help": null, 
                                 "id": "BTDM_CTRL_BLE_MAX_CONN_EFF", 
@@ -2682,7 +2733,7 @@
                             }, 
                             {
                                 "children": [], 
-                                "depends_on": "BTDM_CTRL_MODE_BLE_ONLY", 
+                                "depends_on": "BTDM_CONTROLLER_MODE_BLE_ONLY || BTDM_CONTROLLER_MODE_BTDM", 
                                 "help": "The full scan function is mainly used to provide BLE scan performance.\nThis is required for scenes with high scan performance requirements, such as BLE Mesh scenes.", 
                                 "id": "BTDM_CTRL_FULL_SCAN_SUPPORTED", 
                                 "name": "BTDM_CTRL_FULL_SCAN_SUPPORTED", 
@@ -5094,6 +5145,46 @@
                     {
                         "children": [
                             {
+                                "children": [
+                                    {
+                                        "children": [], 
+                                        "depends_on": "<choice BT_NIMBLE_MEM_ALLOC_MODE>", 
+                                        "help": null, 
+                                        "id": "BT_NIMBLE_MEM_ALLOC_MODE_INTERNAL", 
+                                        "name": "BT_NIMBLE_MEM_ALLOC_MODE_INTERNAL", 
+                                        "range": null, 
+                                        "title": "Internal memory", 
+                                        "type": "bool"
+                                    }, 
+                                    {
+                                        "children": [], 
+                                        "depends_on": "ESP32_SPIRAM_SUPPORT && <choice BT_NIMBLE_MEM_ALLOC_MODE>", 
+                                        "help": null, 
+                                        "id": "BT_NIMBLE_MEM_ALLOC_MODE_EXTERNAL", 
+                                        "name": "BT_NIMBLE_MEM_ALLOC_MODE_EXTERNAL", 
+                                        "range": null, 
+                                        "title": "External SPIRAM", 
+                                        "type": "bool"
+                                    }, 
+                                    {
+                                        "children": [], 
+                                        "depends_on": "<choice BT_NIMBLE_MEM_ALLOC_MODE>", 
+                                        "help": null, 
+                                        "id": "BT_NIMBLE_MEM_ALLOC_MODE_DEFAULT", 
+                                        "name": "BT_NIMBLE_MEM_ALLOC_MODE_DEFAULT", 
+                                        "range": null, 
+                                        "title": "Default alloc mode", 
+                                        "type": "bool"
+                                    }
+                                ], 
+                                "depends_on": null, 
+                                "help": "Allocation strategy for NimBLE host stack, essentially provides ability to\nallocate all required dynamic allocations from,\n\n- Internal DRAM memory only\n- External SPIRAM memory only\n- Either internal or external memory based on default malloc()\n  behavior in ESP-IDF\n\nRecommended mode here is always internal, since that is most preferred\nfrom security perspective. But if application requirement does not\nallow sufficient free internal memory then alternate mode can be\nselected.", 
+                                "id": "component-config-bluetooth-nimble-options-memory-allocation-strategy", 
+                                "name": "BT_NIMBLE_MEM_ALLOC_MODE", 
+                                "title": "Memory allocation strategy", 
+                                "type": "choice"
+                            }, 
+                            {
                                 "children": [], 
                                 "depends_on": "BT_NIMBLE_ENABLED", 
                                 "help": "Defines maximum number of concurrent BLE connections", 
@@ -6089,12 +6180,12 @@
                                 "type": "int"
                             }
                         ], 
-                        "depends_on": "BLE_MESH_NODE && BLE_MESH", 
+                        "depends_on": "BLE_MESH", 
                         "help": "Enable this option to be able to act as a Friend Node.", 
                         "id": "BLE_MESH_FRIEND", 
                         "name": "BLE_MESH_FRIEND", 
                         "range": null, 
-                        "title": "Support for acting as a Friend Node", 
+                        "title": "Support for Friend feature", 
                         "type": "bool"
                     }, 
                     {
@@ -7678,7 +7769,7 @@
                             }
                         ], 
                         "depends_on": null, 
-                        "help": "Configure the number of universally administered (by IEEE) MAC addresses.\nDuring initialisation, MAC addresses for each network interface are generated or derived from a\nsingle base MAC address.\nIf the number of universal MAC addresses is four, all four interfaces (WiFi station, WiFi softap,\nBluetooth and Ethernet) receive a universally administered MAC address. These are generated\nsequentially by adding 0, 1, 2 and 3 (respectively) to the final octet of the base MAC address.\nIf the number of universal MAC addresses is two, only two interfaces (WiFi station and Bluetooth)\nreceive a universally administered MAC address. These are generated sequentially by adding 0\nand 1 (respectively) to the base MAC address. The remaining two interfaces (WiFi softap and Ethernet)\nreceive local MAC addresses. These are derived from the universal WiFi station and Bluetooth MAC\naddresses, respectively.\nWhen using the default (Espressif-assigned) base MAC address, either setting can be used. When using\na custom universal MAC address range, the correct setting will depend on the allocation of MAC\naddresses in this range (either 2 or 4 per device.)", 
+                        "help": "Configure the number of universally administered (by IEEE) MAC addresses.\nDuring initialization, MAC addresses for each network interface are generated or derived from a\nsingle base MAC address.\nIf the number of universal MAC addresses is four, all four interfaces (WiFi station, WiFi softap,\nBluetooth and Ethernet) receive a universally administered MAC address. These are generated\nsequentially by adding 0, 1, 2 and 3 (respectively) to the final octet of the base MAC address.\nIf the number of universal MAC addresses is two, only two interfaces (WiFi station and Bluetooth)\nreceive a universally administered MAC address. These are generated sequentially by adding 0\nand 1 (respectively) to the base MAC address. The remaining two interfaces (WiFi softap and Ethernet)\nreceive local MAC addresses. These are derived from the universal WiFi station and Bluetooth MAC\naddresses, respectively.\nWhen using the default (Espressif-assigned) base MAC address, either setting can be used. When using\na custom universal MAC address range, the correct setting will depend on the allocation of MAC\naddresses in this range (either 2 or 4 per device.)", 
                         "id": "component-config-esp32-specific-number-of-universally-administered-by-ieee-mac-address", 
                         "name": "ESP32_UNIVERSAL_MAC_ADDRESSES", 
                         "title": "Number of universally administered (by IEEE) MAC address", 
@@ -8368,6 +8459,16 @@
                         "type": "int"
                     }, 
                     {
+                        "children": [], 
+                        "depends_on": null, 
+                        "help": "Minimal value of size, in bytes, accepted to execute a expression\nwith shared stack.", 
+                        "id": "ESP_MINIMAL_SHARED_STACK_SIZE", 
+                        "name": "ESP_MINIMAL_SHARED_STACK_SIZE", 
+                        "range": null, 
+                        "title": "Minimal allowed size for shared stack", 
+                        "type": "int"
+                    }, 
+                    {
                         "children": [
                             {
                                 "children": [], 
@@ -8584,6 +8685,46 @@
                         "help": "Debug stubs are used by OpenOCD to execute pre-compiled onboard code\nwhich does some useful debugging stuff, e.g. GCOV data dump.", 
                         "id": "ESP_DEBUG_STUBS_ENABLE", 
                         "name": "ESP_DEBUG_STUBS_ENABLE", 
+                        "range": null, 
+                        "title": null, 
+                        "type": "bool"
+                    }, 
+                    {
+                        "children": [], 
+                        "depends_on": null, 
+                        "help": null, 
+                        "id": "ESP_MAC_ADDR_UNIVERSE_WIFI_STA", 
+                        "name": "ESP_MAC_ADDR_UNIVERSE_WIFI_STA", 
+                        "range": null, 
+                        "title": null, 
+                        "type": "bool"
+                    }, 
+                    {
+                        "children": [], 
+                        "depends_on": null, 
+                        "help": null, 
+                        "id": "ESP_MAC_ADDR_UNIVERSE_WIFI_AP", 
+                        "name": "ESP_MAC_ADDR_UNIVERSE_WIFI_AP", 
+                        "range": null, 
+                        "title": null, 
+                        "type": "bool"
+                    }, 
+                    {
+                        "children": [], 
+                        "depends_on": null, 
+                        "help": null, 
+                        "id": "ESP_MAC_ADDR_UNIVERSE_BT", 
+                        "name": "ESP_MAC_ADDR_UNIVERSE_BT", 
+                        "range": null, 
+                        "title": null, 
+                        "type": "bool"
+                    }, 
+                    {
+                        "children": [], 
+                        "depends_on": null, 
+                        "help": null, 
+                        "id": "ESP_MAC_ADDR_UNIVERSE_ETH", 
+                        "name": "ESP_MAC_ADDR_UNIVERSE_ETH", 
                         "range": null, 
                         "title": null, 
                         "type": "bool"
@@ -9074,58 +9215,7 @@
             {
                 "children": [
                     {
-                        "children": [
-                            {
-                                "children": [
-                                    {
-                                        "children": [], 
-                                        "depends_on": "<choice ESP32_WIFI_SW_COEXIST_PREFERENCE>", 
-                                        "help": null, 
-                                        "id": "ESP32_WIFI_SW_COEXIST_PREFERENCE_WIFI", 
-                                        "name": "ESP32_WIFI_SW_COEXIST_PREFERENCE_WIFI", 
-                                        "range": null, 
-                                        "title": "WiFi", 
-                                        "type": "bool"
-                                    }, 
-                                    {
-                                        "children": [], 
-                                        "depends_on": "<choice ESP32_WIFI_SW_COEXIST_PREFERENCE>", 
-                                        "help": null, 
-                                        "id": "ESP32_WIFI_SW_COEXIST_PREFERENCE_BT", 
-                                        "name": "ESP32_WIFI_SW_COEXIST_PREFERENCE_BT", 
-                                        "range": null, 
-                                        "title": "Bluetooth(include BR/EDR and BLE)", 
-                                        "type": "bool"
-                                    }, 
-                                    {
-                                        "children": [], 
-                                        "depends_on": "<choice ESP32_WIFI_SW_COEXIST_PREFERENCE>", 
-                                        "help": null, 
-                                        "id": "ESP32_WIFI_SW_COEXIST_PREFERENCE_BALANCE", 
-                                        "name": "ESP32_WIFI_SW_COEXIST_PREFERENCE_BALANCE", 
-                                        "range": null, 
-                                        "title": "Balance", 
-                                        "type": "bool"
-                                    }
-                                ], 
-                                "depends_on": "ESP32_WIFI_SW_COEXIST_ENABLE", 
-                                "help": "Choose Bluetooth/WiFi/Balance for different preference.\nIf choose WiFi, it will make WiFi performance better. Such, keep WiFi Audio more fluent.\nIf choose Bluetooth, it will make Bluetooth performance better. Such, keep Bluetooth(A2DP) Audio more\nfluent.\nIf choose Balance, the performance of WiFi and bluetooth will be balance. It's default. Normally, just\nchoose balance, the A2DP audio can play fluently, too.\nExcept config preference in menuconfig, you can also call esp_coex_preference_set() dynamically.", 
-                                "id": "component-config-wi-fi-software-controls-wifi-bluetooth-coexistence-wifi-bluetooth-coexistence-performance-preference", 
-                                "name": "ESP32_WIFI_SW_COEXIST_PREFERENCE", 
-                                "title": "WiFi/Bluetooth coexistence performance preference", 
-                                "type": "choice"
-                            }, 
-                            {
-                                "children": [], 
-                                "depends_on": "ESP32_WIFI_SW_COEXIST_ENABLE", 
-                                "help": null, 
-                                "id": "ESP32_WIFI_SW_COEXIST_PREFERENCE_VALUE", 
-                                "name": "ESP32_WIFI_SW_COEXIST_PREFERENCE_VALUE", 
-                                "range": null, 
-                                "title": null, 
-                                "type": "int"
-                            }
-                        ], 
+                        "children": [], 
                         "depends_on": "BT_ENABLED", 
                         "help": "If enabled, WiFi & Bluetooth coexistence is controlled by software rather than hardware.\nRecommended for heavy traffic scenarios. Both coexistence configuration options are\nautomatically managed, no user intervention is required.\nIf only Bluetooth is used, it is recommended to disable this option to reduce binary file\nsize.", 
                         "id": "ESP32_WIFI_SW_COEXIST_ENABLE", 
@@ -10420,6 +10510,16 @@
                     }, 
                     {
                         "children": [], 
+                        "depends_on": "FREERTOS_UNICORE", 
+                        "help": "On most platforms there are instructions can speedup the ready task\nsearching. Enabling this option the FreeRTOS with this instructions\nsupport will be built.", 
+                        "id": "FREERTOS_OPTIMIZED_SCHEDULER", 
+                        "name": "FREERTOS_OPTIMIZED_SCHEDULER", 
+                        "range": null, 
+                        "title": "Enable FreeRTOS p\u013aatform optimized scheduler", 
+                        "type": "bool"
+                    }, 
+                    {
+                        "children": [], 
                         "depends_on": null, 
                         "help": "Select the tick rate at which FreeRTOS does pre-emptive context switching.", 
                         "id": "FREERTOS_HZ", 
@@ -10769,38 +10869,6 @@
                         "range": null, 
                         "title": "Tickless idle support", 
                         "type": "bool"
-                    }, 
-                    {
-                        "children": [
-                            {
-                                "children": [], 
-                                "depends_on": "FREERTOS_DEBUG_INTERNALS && FREERTOS_DEBUG_INTERNALS", 
-                                "help": "If enabled, debug information (including integrity checks) will be printed\nto UART for the port-specific MUX implementation.", 
-                                "id": "FREERTOS_PORTMUX_DEBUG", 
-                                "name": "FREERTOS_PORTMUX_DEBUG", 
-                                "range": null, 
-                                "title": "Debug portMUX portENTER_CRITICAL/portEXIT_CRITICAL", 
-                                "type": "bool"
-                            }, 
-                            {
-                                "children": [], 
-                                "depends_on": "FREERTOS_PORTMUX_DEBUG && !FREERTOS_UNICORE && FREERTOS_DEBUG_INTERNALS", 
-                                "help": "If enabled, additional debug information will be printed for recursive\nportMUX usage.", 
-                                "id": "FREERTOS_PORTMUX_DEBUG_RECURSIVE", 
-                                "name": "FREERTOS_PORTMUX_DEBUG_RECURSIVE", 
-                                "range": null, 
-                                "title": "Debug portMUX Recursion", 
-                                "type": "bool"
-                            }
-                        ], 
-                        "depends_on": null, 
-                        "help": "Enable this option to show the menu with internal FreeRTOS debugging features.\nThis option does not change any code by itself, it just shows/hides some options.", 
-                        "id": "FREERTOS_DEBUG_INTERNALS", 
-                        "is_menuconfig": true, 
-                        "name": "FREERTOS_DEBUG_INTERNALS", 
-                        "range": null, 
-                        "title": "Debug FreeRTOS internals", 
-                        "type": "menu"
                     }, 
                     {
                         "children": [], 
@@ -11590,6 +11658,16 @@
                             {
                                 "children": [], 
                                 "depends_on": null, 
+                                "help": "TCP will support sending selective acknowledgements (SACKs).", 
+                                "id": "LWIP_TCP_SACK_OUT", 
+                                "name": "LWIP_TCP_SACK_OUT", 
+                                "range": null, 
+                                "title": "Support sending selective acknowledgements", 
+                                "type": "bool"
+                            }, 
+                            {
+                                "children": [], 
+                                "depends_on": null, 
                                 "help": "This option is enabled when the following scenario happen:\nnetwork dropped and reconnected, IP changes is like: 192.168.0.2->0.0.0.0->192.168.0.2\n\nDisable this option to keep consistent with the original LWIP code behavior.", 
                                 "id": "LWIP_TCP_KEEP_CONNECTION_WHEN_IP_CHANGES", 
                                 "name": "LWIP_TCP_KEEP_CONNECTION_WHEN_IP_CHANGES", 
@@ -12114,7 +12192,7 @@
                     }, 
                     {
                         "children": [], 
-                        "depends_on": null, 
+                        "depends_on": "!IDF_TARGET_ESP32S2", 
                         "help": "Enable hardware accelerated AES encryption & decryption.\n\nNote that if the ESP32 CPU is running at 240MHz, hardware AES does not\noffer any speed boost over software AES.", 
                         "id": "MBEDTLS_HARDWARE_AES", 
                         "name": "MBEDTLS_HARDWARE_AES", 
@@ -12124,7 +12202,7 @@
                     }, 
                     {
                         "children": [], 
-                        "depends_on": null, 
+                        "depends_on": "!IDF_TARGET_ESP32S2", 
                         "help": "Enable hardware accelerated multiple precision integer operations.\n\nHardware accelerated multiplication, modulo multiplication,\nand modular exponentiation for up to 4096 bit results.\n\nThese operations are used by RSA.", 
                         "id": "MBEDTLS_HARDWARE_MPI", 
                         "name": "MBEDTLS_HARDWARE_MPI", 
@@ -12134,7 +12212,7 @@
                     }, 
                     {
                         "children": [], 
-                        "depends_on": null, 
+                        "depends_on": "!IDF_TARGET_ESP32S2", 
                         "help": "Enable hardware accelerated SHA1, SHA256, SHA384 & SHA512 in mbedTLS.\n\nDue to a hardware limitation, hardware acceleration is only\nguaranteed if SHA digests are calculated one at a time. If more\nthan one SHA digest is calculated at the same time, one will\nbe calculated fully in hardware and the rest will be calculated\n(at least partially calculated) in software. This happens automatically.\n\nSHA hardware acceleration is faster than software in some situations but\nslower in others. You should benchmark to find the best setting for you.", 
                         "id": "MBEDTLS_HARDWARE_SHA", 
                         "name": "MBEDTLS_HARDWARE_SHA", 
@@ -13736,6 +13814,16 @@
                         "name": "SPIFFS_USE_MTIME", 
                         "range": null, 
                         "title": "Save file modification time", 
+                        "type": "bool"
+                    }, 
+                    {
+                        "children": [], 
+                        "depends_on": "SPIFFS_META_LENGTH >= 8", 
+                        "help": "If this option is not set, the time field is 32 bits (up to 2106 year),\notherwise it is 64 bits and make sure it matches SPIFFS_META_LENGTH.\nIf the chip already has the spiffs image with the time field = 32 bits\nthen this option cannot be applied in this case.\nErase it first before using this option.\nTo resolve the Y2K38 problem for the spiffs, use a toolchain with support\ntime_t 64 bits (see SDK_TOOLCHAIN_SUPPORTS_TIME_WIDE_64_BITS).", 
+                        "id": "SPIFFS_MTIME_WIDE_64_BITS", 
+                        "name": "SPIFFS_MTIME_WIDE_64_BITS", 
+                        "range": null, 
+                        "title": "The time field occupies 64 bits in the image instead of 32 bits", 
                         "type": "bool"
                     }, 
                     {

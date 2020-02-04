@@ -1,4 +1,4 @@
-# Install script for directory: /home/brunocasu/esp/idf_projects/openipmc_esp32
+# Install script for directory: /home/brunocasu/clones/ipmc_esp32/ipmc-esp32/idf_project
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -34,7 +34,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/brunocasu/esp/idf_projects/openipmc_esp32/build/esp-idf/cmake_install.cmake")
+  include("/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/idf_project/build/esp-idf/cmake_install.cmake")
 
 endif()
 
@@ -46,5 +46,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/brunocasu/esp/idf_projects/openipmc_esp32/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/idf_project/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

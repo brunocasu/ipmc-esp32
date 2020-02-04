@@ -1,20 +1,20 @@
 {
     "project_name":       "bootloader",
-    "project_path":       "/home/brunocasu/esp/esp-idf/components/bootloader/subproject",
-    "build_dir":          "/home/brunocasu/esp/idf_projects/openipmc_esp32/build/bootloader",
-    "config_file":        "/home/brunocasu/esp/idf_projects/openipmc_esp32/sdkconfig",
+    "project_path":       "/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/esp-idf/components/bootloader/subproject",
+    "build_dir":          "/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/idf_project/build/bootloader",
+    "config_file":        "/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/idf_project/sdkconfig",
     "config_defaults":    "",
     "app_elf":            "bootloader.elf",
     "app_bin":            "bootloader.bin",
-    "git_revision":       "v4.1-dev-1787-gad261ea8d",
+    "git_revision":       "v4.1-dev-2056-g59946f2b2-dirty",
     "target":             "esp32",
     "phy_data_partition": "",
     "monitor_baud" :      "115200",
     "monitor_toolprefix": "xtensa-esp32-elf-",
     "config_environment" : {
-        "COMPONENT_KCONFIGS" : "/home/brunocasu/esp/esp-idf/components/efuse/Kconfig;/home/brunocasu/esp/esp-idf/components/esp32/Kconfig;/home/brunocasu/esp/esp-idf/components/esp_common/Kconfig;/home/brunocasu/esp/esp-idf/components/log/Kconfig;/home/brunocasu/esp/esp-idf/components/spi_flash/Kconfig",
-        "COMPONENT_KCONFIGS_PROJBUILD" : "/home/brunocasu/esp/esp-idf/components/bootloader/Kconfig.projbuild;/home/brunocasu/esp/esp-idf/components/esptool_py/Kconfig.projbuild;/home/brunocasu/esp/esp-idf/components/partition_table/Kconfig.projbuild"
+        "COMPONENT_KCONFIGS" : "/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/esp-idf/components/efuse/Kconfig;/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/esp-idf/components/esp32/Kconfig;/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/esp-idf/components/esp_common/Kconfig;/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/esp-idf/components/log/Kconfig;/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/esp-idf/components/spi_flash/Kconfig",
+        "COMPONENT_KCONFIGS_PROJBUILD" : "/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/esp-idf/components/bootloader/Kconfig.projbuild;/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/esp-idf/components/esptool_py/Kconfig.projbuild;/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/esp-idf/components/partition_table/Kconfig.projbuild"
     },
     "build_components" : [ "bootloader", "bootloader_support", "efuse", "esp32", "esp_common", "esp_rom", "esptool_py", "log", "main", "micro-ecc", "partition_table", "soc", "spi_flash", "xtensa", "" ],
-    "build_component_paths" : [ "/home/brunocasu/esp/esp-idf/components/bootloader", "/home/brunocasu/esp/esp-idf/components/bootloader_support", "/home/brunocasu/esp/esp-idf/components/efuse", "/home/brunocasu/esp/esp-idf/components/esp32", "/home/brunocasu/esp/esp-idf/components/esp_common", "/home/brunocasu/esp/esp-idf/components/esp_rom", "/home/brunocasu/esp/esp-idf/components/esptool_py", "/home/brunocasu/esp/esp-idf/components/log", "/home/brunocasu/esp/esp-idf/components/bootloader/subproject/main", "/home/brunocasu/esp/esp-idf/components/bootloader/subproject/components/micro-ecc", "/home/brunocasu/esp/esp-idf/components/partition_table", "/home/brunocasu/esp/esp-idf/components/soc", "/home/brunocasu/esp/esp-idf/components/spi_flash", "/home/brunocasu/esp/esp-idf/components/xtensa", "" ]
+    "build_component_paths" : [ "/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/esp-idf/components/bootloader", "/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/esp-idf/components/bootloader_support", "/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/esp-idf/components/efuse", "/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/esp-idf/components/esp32", "/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/esp-idf/components/esp_common", "/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/esp-idf/components/esp_rom", "/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/esp-idf/components/esptool_py", "/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/esp-idf/components/log", "/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/esp-idf/components/bootloader/subproject/main", "/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/esp-idf/components/bootloader/subproject/components/micro-ecc", "/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/esp-idf/components/partition_table", "/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/esp-idf/components/soc", "/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/esp-idf/components/spi_flash", "/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/esp-idf/components/xtensa", "" ]
 }

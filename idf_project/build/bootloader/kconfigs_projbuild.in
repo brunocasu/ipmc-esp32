@@ -1,3 +1,3 @@
-source "/home/brunocasu/esp/esp-idf/components/bootloader/Kconfig.projbuild"
-source "/home/brunocasu/esp/esp-idf/components/esptool_py/Kconfig.projbuild"
-source "/home/brunocasu/esp/esp-idf/components/partition_table/Kconfig.projbuild"
+source "/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/esp-idf/components/bootloader/Kconfig.projbuild"
+source "/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/esp-idf/components/esptool_py/Kconfig.projbuild"
+source "/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/esp-idf/components/partition_table/Kconfig.projbuild"

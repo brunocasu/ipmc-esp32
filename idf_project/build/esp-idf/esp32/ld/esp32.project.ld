@@ -1,6 +1,6 @@
 /* Automatically generated file; DO NOT EDIT */
 /* Espressif IoT Development Framework Linker Script */
-/* Generated from: /home/brunocasu/esp/esp-idf/components/esp32/ld/esp32.project.ld.in */
+/* Generated from: /home/brunocasu/clones/ipmc_esp32/ipmc-esp32/esp-idf/components/esp32/ld/esp32.project.ld.in */
 
 /*  Default entry point:  */
 ENTRY(call_start_cpu0);
@@ -339,7 +339,8 @@ SECTIONS
   ASSERT(((_bss_end - ORIGIN(dram0_0_seg)) <= LENGTH(dram0_0_seg)),
           "DRAM segment data does not fit.")
 
-  .flash.rodata :
+  /* When modifying the alignment, update tls_section_alignment in pxPortInitialiseStack */
+  .flash.rodata : ALIGN(0x10)
   {
     _rodata_start = ABSOLUTE(.);
 
@@ -350,7 +351,7 @@ SECTIONS
     *liblog.a:log.*(.rodata.esp_log_level_set.str1.4 .rodata.__func__$3523 .rodata.__func__$3500)
     *liblog.a:log_freertos.*(.rodata.esp_log_system_timestamp.str1.4)
     *libesp_event.a:default_event_loop.*(.rodata.esp_event_loop_create_default.str1.4 .rodata.esp_event_send_to_default_loop)
-    *libesp_event.a:esp_event.*(.rodata.loop_node_add_handler.str1.4 .rodata.esp_event_loop_create.str1.4 .rodata.esp_event_loop_run.str1.4 .rodata.esp_event_handler_register_with.str1.4 .rodata.__func__$8569 .rodata.__func__$8556 .rodata.__func__$8536 .rodata.__func__$8520 .rodata.__func__$8497 .rodata.__func__$8456 .rodata.__func__$8447)
+    *libesp_event.a:esp_event.*(.rodata.loop_node_add_handler.str1.4 .rodata.esp_event_loop_create.str1.4 .rodata.esp_event_loop_run.str1.4 .rodata.esp_event_handler_register_with.str1.4 .rodata.__func__$8717 .rodata.__func__$8704 .rodata.__func__$8684 .rodata.__func__$8668 .rodata.__func__$8645 .rodata.__func__$8604 .rodata.__func__$8595)
     *libsoc.a:uart_hal_iram.*( .rodata  .rodata.*)
 
     *(.irom1.text) /* catch stray ICACHE_RODATA_ATTR */

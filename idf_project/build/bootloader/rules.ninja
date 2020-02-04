@@ -175,7 +175,7 @@ rule C_STATIC_LIBRARY_LINKER____idf_main
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = /usr/bin/cmake -S/home/brunocasu/esp/esp-idf/components/bootloader/subproject -B/home/brunocasu/esp/idf_projects/openipmc_esp32/build/bootloader
+  command = /usr/bin/cmake -S/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/esp-idf/components/bootloader/subproject -B/home/brunocasu/clones/ipmc_esp32/ipmc-esp32/idf_project/build/bootloader
   description = Re-running CMake...
   generator = 1
 

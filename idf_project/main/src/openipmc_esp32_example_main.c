@@ -16,11 +16,11 @@
 #include <stdbool.h>
 
 //OpenIPMC includes
-#include <../OpenIPMC/src/ipmc_ios.h>
-#include <../OpenIPMC/src/ipmb_0.h> 
-#include <../OpenIPMC/src/ipmi_msg_manager.h> 
-#include <../OpenIPMC/src/fru_state_machine.h>
-#include <../OpenIPMC/src/ipmc_tasks.h>
+#include <openipmc/src/ipmc_ios.h>
+#include <openipmc/src/ipmb_0.h> 
+#include <openipmc/src/ipmi_msg_manager.h> 
+#include <openipmc/src/fru_state_machine.h>
+#include <openipmc/src/ipmc_tasks.h>
 
 #include "soc/i2c_periph.h"
 
@@ -35,7 +35,11 @@
 
 
 int periphs_init();
-
+// Task handlers for I2C receiver
+TaskHandle_t i2c_0_receiver_manager_task_ptr;
+TaskHandle_t i2c_1_receiver_manager_task_ptr;
+void i2c_0_receiver_manager_task( void *pvParameters );
+void i2c_1_receiver_manager_task( void *pvParameters );
   
 void app_main( void )
 {
@@ -46,7 +50,7 @@ void app_main( void )
     else 
     {printf("Peripherals Initialization FAIL -- -- -- status = %d\n",init_status);}
     
-    
+
     xTaskCreate( ipmb_0_msg_receiver_task, 				
 	             ( const char * ) "MNG", 	
 	             8000, 	
@@ -91,7 +95,7 @@ void app_main( void )
 */    
     data_ipmb ipmi_req;
     ipmi_req.channel = 'A';
-    ipmi_req.lenght  = 8;
+    ipmi_req.length  = 8;
     ipmi_req.data[0] = 0x86;
     ipmi_req.data[1] = 0xff;
     ipmi_req.data[2] = 0x7b; // checksum of bytes [0] and [1]
@@ -100,7 +104,7 @@ void app_main( void )
     ipmi_req.data[5] = 0xff;
     ipmi_req.data[6] = 0xff;
     ipmi_req.data[7] = 0xff;
-    int n=0;
+    // int n=0;
     //vTaskDelay (pdMS_TO_TICKS(5500));
     
     while(1){
