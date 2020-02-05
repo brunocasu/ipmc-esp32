@@ -232,10 +232,44 @@ int periphs_init(void)
     gpio_set_direction(GPIO_NUM_32,  GPIO_MODE_INPUT); // HA5
     gpio_set_direction(GPIO_NUM_35,  GPIO_MODE_INPUT); // HA6
     gpio_set_direction(GPIO_NUM_34,  GPIO_MODE_INPUT); // HA7
+    
+    gpio_set_direction(GPIO_NUM_16,  GPIO_MODE_INPUT); // Handle Switch
+    
     gpio_set_direction(GPIO_NUM_17,  GPIO_MODE_OUTPUT);// LED on DIMM adapter
     gpio_set_direction(GPIO_NUM_4,   GPIO_MODE_OUTPUT);// EXT_RST
-    gpio_set_direction(GPIO_NUM_16,  GPIO_MODE_INPUT); // Handle Switch
-  //gpio_set_direction(GPIO_NUM_12,  GPIO_MODE_OUTPUT);// PIN 12 OUT - 12V_Enable COMMENTED FOR SAFETY.   
+    //gpio_set_direction(GPIO_NUM_12,  GPIO_MODE_OUTPUT);// PIN 12 OUT - 12V_Enable COMMENTED FOR SAFETY.
+    
+    // enable GPIO pull up resistor
+    esp_err_t retval_pullup
+    retval_pullup = gpio_pullup_en(GPIO_NUM_16);
+    if (retval_pullup != ESP_OK) {status_global = 0;} // config fail
+    
+    retval_pullup = gpio_pullup_en(GPIO_NUM_14);
+    if (retval_pullup != ESP_OK) {status_global = 0;} // config fail
+    
+    retval_pullup = gpio_pullup_en(GPIO_NUM_27);
+    if (retval_pullup != ESP_OK) {status_global = 0;} // config fail
+    
+    retval_pullup = gpio_pullup_en(GPIO_NUM_26);
+    if (retval_pullup != ESP_OK) {status_global = 0;} // config fail
+    
+    retval_pullup = gpio_pullup_en(GPIO_NUM_25);
+    if (retval_pullup != ESP_OK) {status_global = 0;} // config fail
+    
+    retval_pullup = gpio_pullup_en(GPIO_NUM_33);
+    if (retval_pullup != ESP_OK) {status_global = 0;} // config fail
+    
+    retval_pullup = gpio_pullup_en(GPIO_NUM_32);
+    if (retval_pullup != ESP_OK) {status_global = 0;} // config fail
+    
+    retval_pullup = gpio_pullup_en(GPIO_NUM_35);
+    if (retval_pullup != ESP_OK) {status_global = 0;} // config fail
+    
+    retval_pullup = gpio_pullup_en(GPIO_NUM_34);
+    if (retval_pullup != ESP_OK) {status_global = 0;} // config fail
+        
+        
+     
   
   //printf_mutex = xSemaphoreCreateMutex();
     ipmb_rec_semphr = xSemaphoreCreateBinary();
