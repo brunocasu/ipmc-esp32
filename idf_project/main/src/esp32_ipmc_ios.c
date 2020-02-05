@@ -240,7 +240,7 @@ int periphs_init(void)
     //gpio_set_direction(GPIO_NUM_12,  GPIO_MODE_OUTPUT);// PIN 12 OUT - 12V_Enable COMMENTED FOR SAFETY.
     
     // enable GPIO pull up resistor
-    esp_err_t retval_pullup
+    esp_err_t retval_pullup;
     retval_pullup = gpio_pullup_en(GPIO_NUM_16);
     if (retval_pullup != ESP_OK) {status_global = 0;} // config fail
     
