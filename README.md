@@ -11,15 +11,19 @@ a forked repository called esp32_custom, which adapted the code to correct the F
 
 ## How to install
 
-Using your console, choose and switch to a folder to clone the repository (as a sugestion, create a folder named "clones" in your home directory), then run git clone as the following script: 
+Using your console, choose and switch to a folder to clone the repository (as a sugestion, create a folder named "clones" in your home directory). 
 ```shell
 cd ~
 mkdir clones
 cd clones
+```
+To clone the project use the following script:
+```shell
 git clone --recurse-submodules -j8 git@github.com:brunocasu/ipmc-esp32.git
 ```
 This will download the repository with all the submodules in it.
-**NOTE:** This operation may take some time because the esp-idf repository has a large number of files and submodules.
+
+**NOTE:** This operation may take some time as the esp-idf repository has a large number of files and submodules.
 
 To install the IDF platform, go into the ```/esp-idf``` folder and execute ```install.sh```
 ```shell
@@ -28,7 +32,7 @@ cd ~/clones/ipmc-esp32/esp-idf
 ```
 
 After the IDF installation you will need to create the path to compile the project.
-Go to the ```idf_project``` folder and execute ```export.sh``` from that folder
+Go to the ```idf_project``` folder and execute ```export.sh``` from that folder:
 ```shell
 cd ~/clones/ipmc-esp32/idf-project
 . $HOME/clones/ipmc-esp32/esp-idf/export.sh
@@ -47,12 +51,12 @@ To compile the demonstration project, run the following command from the folder 
 ```shell
 idf.py build
 ```
-For progrmaming the board and monitoring the USB port use:
+To program the board and monitor the USB port use:
 ```shell 
 idf.py -p (USR_PORT) flash
 idf.py -p (USR_PORT) monitor
 ```
-If is necessary to change any configuration of the project run:
+If is necessary to change any configuration of the IDF project run:
 ```shell
 idf.ṕy menuconfig
 ```
