@@ -235,7 +235,7 @@ int periphs_init(void)
     
     gpio_set_direction(GPIO_NUM_16,  GPIO_MODE_INPUT); // Handle Switch
     
-    gpio_set_direction(GPIO_NUM_17,  GPIO_MODE_OUTPUT);// LED on DIMM adapter
+    gpio_set_direction(GPIO_NUM_17,  GPIO_MODE_OUTPUT);// LED 
     gpio_set_direction(GPIO_NUM_4,   GPIO_MODE_OUTPUT);// EXT_RST
     //gpio_set_direction(GPIO_NUM_12,  GPIO_MODE_OUTPUT);// PIN 12 OUT - 12V_Enable COMMENTED FOR SAFETY.
     
@@ -442,7 +442,8 @@ uint8_t ipmc_ios_read_haddress(void)
   if( gpio_get_level(GPIO_NUM_34) > 0 ) // HA7
     HA_bit[7] = 1;
   
-  return 0x43;  // THIS IS ONLY FOR TESTING
+  return 0x43; // THIS IS ONLY FOR TESTING (skips parity check, return hard coded addr)
+
   
   /* Calculate parity */
   parity_odd = 0; // initialize as EVEN
