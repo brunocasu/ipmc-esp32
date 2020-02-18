@@ -442,6 +442,8 @@ uint8_t ipmc_ios_read_haddress(void)
   if( gpio_get_level(GPIO_NUM_34) > 0 ) // HA7
     HA_bit[7] = 1;
   
+  return 0x43;  // THIS IS ONLY FOR TESTING
+  
   /* Calculate parity */
   parity_odd = 0; // initialize as EVEN
   for(i=0; i<8; i++)
@@ -454,8 +456,8 @@ uint8_t ipmc_ios_read_haddress(void)
   {
     for(i=0; i<=6; i++)
       HA_num |= (HA_bit[i]<<i);
-    return 0x43; // THIS IS ONLY FOR TESTING
-  //return HA_num; // 7bit addr
+  
+      return HA_num; // 7bit addr
   }
   else
     return HA_PARITY_FAIL; //parity fail (must be ODD)
